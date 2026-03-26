@@ -1,0 +1,16 @@
+.question-card p {
+    margin: 0px;
+}
+
+.question-card .right .author span:first-child{
+    height: 30px;
+    width: 30px;
+}
+
+.question-card .right .author {
+    font-size: 14px;
+}
+
+.question-card .left p {
+    font-size: 10px;
+}

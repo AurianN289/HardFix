@@ -6,7 +6,7 @@ import '../styles/header.css'
 
 function Header() {
     return (
-        <header className='sticky-top border-bottom'> 
+        <header className='sticky-top border-bottom bg-white shadow-sm'> 
             <div className='container d-flex justify-content-between align-items-center header ' >
                 <div className='d-flex align-items-center col-2'> 
                     <img src={logo} alt="Logo" /> 

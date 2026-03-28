@@ -5,7 +5,7 @@ import { ChevronUp } from 'lucide-react';
 
 function QuestionCard({id, votos, respostas, views, titulo, descricao, tags, autor, data}) {
     return(
-        <article className='d-flex p-3 border rounded shadow-sm question-card'>
+        <article className='d-flex p-3 border rounded shadow-sm question-card bg-white'>
             <div className='d-flex flex-column align-items-center justify-content-evenly col-1 left text-center gap-2'>
                 <div> 
                     <ChevronUp color='#0dcaf0'/> <div className='text-info'>{votos}</div> <p className='text-muted text-uppercase'>Votos</p> 

@@ -2,7 +2,7 @@
     margin: 0px;
 }
 
-.question-card .right .author span:first-child{
+.question-card .right .author .first-letter {
     height: 30px;
     width: 30px;
 }
@@ -13,4 +13,8 @@
 
 .question-card .left p {
     font-size: 10px;
+}
+
+.tags {
+    height: 13%;
 }

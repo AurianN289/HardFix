@@ -23,7 +23,7 @@ function Login(){
                             <input type="password" className="form-control" placeholder="Digite sua senha" required />
                         </div>
 
-                        <button type="submit" className="btn btn-primary w-100">
+                        <button type="submit" className="btn btn-warning text-white fw-semibold w-100">
                             Entrar
                         </button>
                     </form>

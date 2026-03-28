@@ -94,7 +94,7 @@ function RegisterUser() {
                 />
                 </div>
 
-                <button type="submit" className="btn btn-success w-100">
+                <button type="submit" className="btn btn-warning text-white fw-semibold w-100">
                 Registrar
                 </button>
             </form>

@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/home.css';
 
 import Header from '../components/header';
 import QuestionCard from '../components/questionCard';
@@ -96,10 +97,16 @@ function Home() {
 ];
 
     return (
-        <div>
+        <div className='home'>
             <Header />
 
             <div className='container d-flex flex-column gap-3 mt-4'>
+                <div> 
+                  <h2 className='fs-4 mb-1'> Todas as perguntas </h2>
+                  <p> {questions.length} perguntas </p>
+                </div>
+                
+
                 {questions.map((q, index) => (
                 <QuestionCard key={q.id} {...q} index={index} />
                 ))}

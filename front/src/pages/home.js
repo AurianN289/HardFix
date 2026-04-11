@@ -96,15 +96,15 @@ function Home() {
 ];
 
     return (
-        <div>
+        <main>
             <Header />
 
-            <div className='container d-flex flex-column gap-3 mt-4'>
+            <section className='container d-flex flex-column gap-3 mt-4'>
                 {questions.map((q, index) => (
                 <QuestionCard key={q.id} {...q} index={index} />
                 ))}
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }
 

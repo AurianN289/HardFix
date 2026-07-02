@@ -97,7 +97,7 @@ function Home() {
 ];
 
     return (
-        <div className='home'>
+        <div className='body'>
             <Header />
 
             <div className='container d-flex flex-column gap-3 mt-4'>

@@ -3,7 +3,7 @@ import '../styles/tagBadge.css'
 
 function TagBadge({tag}){
     return(
-        <div className='bg-warning px-2 rounded d-flex align-items-center gap-1 tag fw-semibold'>
+        <div className='bg-warning px-2 rounded d-flex align-items-center gap-1 tag fw-semibold align-middle'>
             <p>{tag}</p>
         </div>
     );

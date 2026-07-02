@@ -1,8 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/question-card.css'
-import TagBadge from './tagBadge';
-
 import { ChevronUp } from 'lucide-react';
+
+import TagBadge from './tagBadge';
+import CardAuthor from './cardAuthor';
+
 
 function QuestionCard({id, votos, respostas, views, titulo, descricao, tags, autor, data}) {
     return(
@@ -21,12 +23,7 @@ function QuestionCard({id, votos, respostas, views, titulo, descricao, tags, aut
                 <div className='d-flex gap-2 mb-3 tags'>
                     {tags.map((q) => (<TagBadge key={q.id} tag={q} />))}                    
                 </div>
-                <div className='d-flex align-items-center gap-2 author ' >
-                    <span className='bg-info rounded-circle text-white d-flex align-items-center justify-content-center fw-bold first-letter'>C</span>
-                    <span className='fw-bold'>{autor}</span> 
-                    <span>.</span> 
-                    <time>ha {data} dias</time>
-                </div>
+                <CardAuthor nome={autor} data={data} />
             </div>
         </article>
     );

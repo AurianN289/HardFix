@@ -97,6 +97,7 @@ function Home() {
 ];
 
     return (
+<<<<<<< HEAD
         <div className='body'>
             <Header />
 
@@ -107,11 +108,17 @@ function Home() {
                 </div>
                 
 
+=======
+        <main>
+            <Header />
+
+            <section className='container d-flex flex-column gap-3 mt-4'>
+>>>>>>> e8786e941f77927f285d1d1281b05ae478485f9b
                 {questions.map((q, index) => (
                 <QuestionCard key={q.id} {...q} index={index} />
                 ))}
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }
 

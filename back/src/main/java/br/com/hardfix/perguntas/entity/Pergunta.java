@@ -1,9 +1,8 @@
 package br.com.hardfix.perguntas.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import br.com.hardfix.usuarios.entity.Usuario;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +25,10 @@ public class Pergunta extends PersistenceEntity implements Serializable {
     @Column(name = "descricao", nullable = false)
     private String descricao;
 
-    @Column(name = "data_criacao")
+    @Column(name = "data_criacao",  nullable = false)
     private LocalDateTime dataCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 }

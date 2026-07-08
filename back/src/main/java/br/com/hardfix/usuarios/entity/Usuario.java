@@ -2,10 +2,12 @@
 package br.com.hardfix.usuarios.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
+import br.com.hardfix.perguntas.entity.Pergunta;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -24,5 +26,6 @@ public class Usuario extends PersistenceEntity implements Serializable{
     @Column(name = "senha",  nullable = false)
     private String senha;
 
-    
+    @OneToMany(mappedBy = "usuario")
+    private List<Pergunta> perguntas;
 }

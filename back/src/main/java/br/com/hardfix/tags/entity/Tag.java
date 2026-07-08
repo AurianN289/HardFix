@@ -1,6 +1,7 @@
 package br.com.hardfix.tags.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
+import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.usuarios.entity.Usuario;
 import jakarta.persistence.*;
@@ -27,4 +28,6 @@ public class Tag extends PersistenceEntity implements Serializable {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @ManyToMany(mappedBy = "tags")
+    private List<Pergunta> perguntas;
 }

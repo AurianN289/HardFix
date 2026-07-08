@@ -2,6 +2,7 @@ package br.com.hardfix.perguntas.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
 import br.com.hardfix.respostas.entity.Resposta;
+import br.com.hardfix.tags.entity.Tag;
 import br.com.hardfix.usuarios.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,4 +37,14 @@ public class Pergunta extends PersistenceEntity implements Serializable {
 
     @OneToMany(mappedBy = "pergunta")
     private List<Resposta> respostas;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pergunta_tags",
+            joinColumns = @JoinColumn(name = "pergunta_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
+
+
 }

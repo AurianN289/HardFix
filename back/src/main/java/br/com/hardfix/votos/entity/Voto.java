@@ -1,6 +1,8 @@
 package br.com.hardfix.votos.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
+import br.com.hardfix.respostas.entity.Resposta;
+import br.com.hardfix.usuarios.entity.Usuario;
 import br.com.hardfix.votos.enums.TipoVoto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +22,11 @@ public class Voto extends PersistenceEntity implements Serializable {
     @Column(name = "tipo", nullable = false)
     private TipoVoto tipo;
 
-    @Column(name = "data_criacao", nullable = false)
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
+    @ManyToOne
+    @JoinColumn(name = "resposta_id")
+    private Resposta resposta;
 }

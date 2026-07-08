@@ -1,6 +1,7 @@
 package br.com.hardfix.notificacoes.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
+import br.com.hardfix.usuarios.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,8 @@ public class Notificacao extends PersistenceEntity implements Serializable {
     @Column(name = "data_envio", nullable = false)
     private LocalDateTime dataEnvio = LocalDateTime.now();
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 }

@@ -29,7 +29,7 @@ public class Pergunta extends PersistenceEntity implements Serializable {
     private String descricao;
 
     @Column(name = "data_criacao",  nullable = false)
-    private LocalDateTime dataCriacao;
+    private LocalDateTime dataCriacao = LocalDateTime.now();;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

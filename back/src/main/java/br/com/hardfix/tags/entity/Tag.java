@@ -24,10 +24,6 @@ public class Tag extends PersistenceEntity implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-
     @ManyToMany(mappedBy = "tags")
     private List<Pergunta> perguntas;
 }

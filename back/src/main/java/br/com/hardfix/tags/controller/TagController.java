@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/tags")
@@ -22,6 +24,11 @@ public class TagController {
         tagService.save(tag);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(tag);
+    }
+
+    @GetMapping("/findall")
+    public ResponseEntity<List<Tag>> findAll() {
+        return ResponseEntity.ok(tagService.findAll());
     }
 
 }

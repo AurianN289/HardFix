@@ -1,17 +1,27 @@
 import { useState } from "react";
 
-function TagInput({ tags, setTags }) {
+function TagInput({ tags, setTags, availableTags }) {
   const [tagText, setTagText] = useState("");
 
-  function addTag(tagName) {
-    const formattedTag = tagName.trim();
+  const filteredTags = availableTags.filter((availableTag) => {
+    const matchesSearch = availableTag.nome
+      .toLowerCase()
+      .includes(tagText.trim().toLowerCase());
 
-    if (!formattedTag) {
+    const isAlreadySelected = tags.some(
+      (selectedTag) => selectedTag.id === availableTag.id
+    );
+
+    return matchesSearch && !isAlreadySelected;
+  });
+
+  function addTag(tag) {
+    if (!tag || tags.length >= 5) {
       return;
     }
 
     const tagAlreadyExists = tags.some(
-      (tag) => tag.toLowerCase() === formattedTag.toLowerCase()
+      (selectedTag) => selectedTag.id === tag.id
     );
 
     if (tagAlreadyExists) {
@@ -19,23 +29,22 @@ function TagInput({ tags, setTags }) {
       return;
     }
 
-    if (tags.length >= 5) {
-      return;
-    }
-
-    setTags([...tags, formattedTag]);
+    setTags([...tags, tag]);
     setTagText("");
   }
 
   function handleKeyDown(event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      addTag(tagText);
+
+      if (filteredTags.length > 0) {
+        addTag(filteredTags[0]);
+      }
     }
   }
 
-  function removeTag(tagToRemove) {
-    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+  function removeTag(tagId) {
+    const updatedTags = tags.filter((tag) => tag.id !== tagId);
     setTags(updatedTags);
   }
 
@@ -46,8 +55,7 @@ function TagInput({ tags, setTags }) {
       </label>
 
       <p className="form-description text-secondary mb-2">
-        Adicione até 5 tags para descrever sobre o que é sua pergunta.
-        Pressione Enter para adicionar.
+        Pesquise e selecione até 5 tags para descrever sua pergunta.
       </p>
 
       <input
@@ -61,20 +69,47 @@ function TagInput({ tags, setTags }) {
         disabled={tags.length >= 5}
       />
 
+      {tagText.trim() && tags.length < 5 && (
+        <div className="list-group mt-2">
+          {filteredTags.length > 0 ? (
+            filteredTags.slice(0, 5).map((tag) => (
+              <button
+                key={tag.id}
+                type="button"
+                className="list-group-item list-group-item-action"
+                onClick={() => addTag(tag)}
+              >
+                <strong>{tag.nome}</strong>
+
+                {tag.descricao && (
+                  <small className="d-block text-secondary">
+                    {tag.descricao}
+                  </small>
+                )}
+              </button>
+            ))
+          ) : (
+            <div className="list-group-item text-secondary">
+              Nenhuma tag encontrada.
+            </div>
+          )}
+        </div>
+      )}
+
       {tags.length > 0 && (
         <div className="d-flex flex-wrap gap-2 mt-2">
           {tags.map((tag) => (
             <span
-              key={tag}
+              key={tag.id}
               className="selected-tag d-inline-flex align-items-center gap-2"
             >
-              {tag}
+              {tag.nome}
 
               <button
                 type="button"
                 className="tag-remove-button"
-                aria-label={`Remover tag ${tag}`}
-                onClick={() => removeTag(tag)}
+                aria-label={`Remover tag ${tag.nome}`}
+                onClick={() => removeTag(tag.id)}
               >
                 ×
               </button>

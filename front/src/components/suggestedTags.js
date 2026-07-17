@@ -1,29 +1,18 @@
-const suggestedTags = [
-  "CPU",
-  "GPU",
-  "RAM",
-  "Placa-mãe",
-  "Fonte",
-  "Notebook",
-  "Monitor",
-  "SSD",
-  "Periféricos",
-  "Driver",
-  "Refrigeração",
-  "Energia",
-];
+import { useState } from "react";
 
-function SuggestedTags({ tags, setTags }) {
-  function addSuggestedTag(tagName) {
+function SuggestedTags({ tags, setTags, suggestedTags }) {
+
+  function addSuggestedTag(tag) {
+
     const tagAlreadyExists = tags.some(
-      (tag) => tag.toLowerCase() === tagName.toLowerCase()
+      (t) => t.id === tag.id
     );
 
     if (tagAlreadyExists || tags.length >= 5) {
       return;
     }
 
-    setTags([...tags, tagName]);
+    setTags([...tags, tag]);
   }
 
   return (
@@ -34,11 +23,13 @@ function SuggestedTags({ tags, setTags }) {
 
       <div className="d-flex flex-wrap gap-2">
         {suggestedTags.map((tag) => {
-          const isSelected = tags.includes(tag);
+          const isSelected = tags.some(
+            (t) => t.id === tag.id
+          );
 
           return (
             <button
-              key={tag}
+              key={tag.id}
               type="button"
               className={`btn suggested-tag ${
                 isSelected ? "suggested-tag-selected" : ""
@@ -46,7 +37,7 @@ function SuggestedTags({ tags, setTags }) {
               onClick={() => addSuggestedTag(tag)}
               disabled={isSelected || tags.length >= 5}
             >
-              {tag}
+              {tag.nome}
             </button>
           );
         })}

@@ -5,6 +5,8 @@ import br.com.hardfix.tags.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TagService implements TagIService {
 
@@ -26,6 +28,11 @@ public class TagService implements TagIService {
             tagRepository.save(tag);
         }
 
+    }
+
+
+    public List<Tag> findAll() throws RuntimeException {
+        return tagRepository.findAll();
     }
 
 }

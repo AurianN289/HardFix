@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormField from "./formField";
 import ImageUpload from "./imageUpload";
 import SuggestedTags from "./suggestedTags";
@@ -8,27 +8,89 @@ function QuestionForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
   const [image, setImage] = useState(null);
 
-  function handleSubmit(event) {
-    event.preventDefault();
+
+  useEffect(() => {
+    async function loadTags() {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/tags/findall"
+        );
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar tags");
+        }
+
+        const data = await response.json();
+        setAvailableTags(data);
+      } catch (error) {
+        console.error("Erro ao carregar tags:", error);
+      }
+    }
+
+    loadTags();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (tags.length === 0) {
       alert("Adicione pelo menos uma tag.");
       return;
     }
 
-    const questionData = {
-      title,
-      description,
-      tags,
-      image,
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      alert("Você precisa estar logado para publicar uma pergunta.");
+      return;
+    }
+
+    const pergunta = {
+      titulo: title,
+      descricao: description,
+
+      usuario: {
+        id: Number(userId),
+      },
+
+      tags: tags.map((tag) => ({
+        id: tag.id,
+      })),
     };
 
-    console.log("Dados da pergunta:", questionData);
+  try {
+    const response = await fetch(
+      "http://localhost:8080/perguntas/save",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pergunta),
+      }
+    );
 
-    alert("Pergunta pronta para ser enviada!");
+    if (response.ok) {
+      const data = await response.json();
+
+      console.log("Pergunta cadastrada:", data);
+      alert("Pergunta publicada com sucesso!");
+
+      handleCancel();
+    } else {
+      const erro = await response.text();
+
+      console.error("Erro do servidor:", erro);
+      alert("Erro ao publicar pergunta.");
+    }
+  } catch (error) {
+    console.error("Erro de conexão:", error);
+    alert("Não foi possível conectar ao servidor.");
   }
+};
 
   function handleCancel() {
     setTitle("");
@@ -64,9 +126,9 @@ function QuestionForm() {
         rows={8}
       />
 
-      <TagInput tags={tags} setTags={setTags} />
+      <TagInput tags={tags} setTags={setTags} availableTags={availableTags} />
 
-      <SuggestedTags tags={tags} setTags={setTags} />
+      <SuggestedTags tags={tags} setTags={setTags} suggestedTags={availableTags}/>
 
       <ImageUpload image={image} setImage={setImage} />
 

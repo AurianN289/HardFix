@@ -4,6 +4,8 @@ import logo from '../assets/circuit-board.png'
 import {Bell} from 'lucide-react'
 import '../styles/header.css'
 
+import { Link  } from 'react-router-dom';
+
 function Header() {
     return (
         <header className='sticky-top border-bottom bg-white shadow-sm'> 
@@ -20,7 +22,7 @@ function Header() {
                 <div className='d-flex justify-content-end align-items-center col-3 gap-3'> 
                     <Bell size={24} />
 
-                    <button className='btn btn-warning fw-semibold'> Fazer Pergunta </button>
+                    <Link to="/registerQuestion" className="btn btn-warning fw-semibold">Fazer pergunta</Link>
 
                     <button className='btn btn-info text-white fw-bold'>U</button>
                 </div>

@@ -28,4 +28,18 @@ public class UsuarioService implements UsuarioIService {
         }
     }
 
+
+    public Usuario login(Usuario usuario) throws RuntimeException{
+        Usuario usuarioLogado = usuarioRepository.findByEmail(usuario.getEmail());
+
+        if(usuarioLogado == null){
+            throw new RuntimeException("dados vazios");
+        }else if( !(usuarioLogado.getSenha().equals(usuario.getSenha())) ){
+            throw new RuntimeException("senha errada");
+        }else {
+            return usuarioLogado;
+        }
+    }
+
+
 }

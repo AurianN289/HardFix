@@ -36,5 +36,5 @@ public class Resposta extends PersistenceEntity implements Serializable {
 
     @OneToMany(mappedBy = "resposta")
     private List<Voto> votos;
-    
+
 }

@@ -1,9 +1,47 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/login.css';
 
-import { Link,  } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
+import { useState } from 'react';
+
+const API_URL = "http://localhost:8080/usuarios";
 
 function Login(){
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const usuario = {
+            email: e.target.email.value,
+            senha: e.target.senha.value
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuario)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                localStorage.setItem('user_id', data.id);
+                navigate("/home");
+                
+            } else {
+                alert("Erro ao fazer login");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Erro de conexão com o servidor");
+        }
+    };
+
     return (
         <div className='bg-light'>
             <div className="container d-flex justify-content-center align-items-center vh-100">
@@ -12,15 +50,15 @@ function Login(){
                 
                     <h3 className="text-center mb-4">Login</h3>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label className="form-label">Email</label>
-                            <input type="email" className="form-control" placeholder="Digite seu email" required />
+                            <input id = "email" type="email" className="form-control" placeholder="Digite seu email" required />
                         </div>
 
                         <div className="mb-3">
                             <label className="form-label">Senha</label>
-                            <input type="password" className="form-control" placeholder="Digite sua senha" required />
+                            <input id = "senha" type="password" className="form-control" placeholder="Digite sua senha" required />
                         </div>
 
                         <button type="submit" className="btn btn-warning text-white fw-semibold w-100">

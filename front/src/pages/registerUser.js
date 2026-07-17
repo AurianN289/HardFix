@@ -3,21 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
+
 function RegisterUser() {
-    
-    // states para armazenar os valores dos campos do formulário
-    const [nome, setNome] = useState('');
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault();
 
-        // NOMES E CAMPOS DEVEM SER IGUAIS AOS DO BACKEND
+        // NOMES E CAMPOS DEVEM SER IGUAIS AOS DO BACKEND 
         const usuario = {
-            nome: nome,
-            email: email,
-            senha: senha
+            nome: e.target.nome.value,
+            email: e.target.email.value,
+            senha: e.target.senha.value
         };
 
         try{
@@ -56,8 +52,6 @@ function RegisterUser() {
                 <label className="form-label">Nome</label>
                 <input 
                     id = "nome"
-                    value = {nome} 
-                    onChange={(e) => setNome(e.target.value)}
 
                     type="text" 
                     className="form-control" 
@@ -70,8 +64,6 @@ function RegisterUser() {
                 <label className="form-label">Email</label>
                 <input 
                     id = "email"
-                    value = {email} 
-                    onChange={(e) => setEmail(e.target.value)}
 
                     type="email" 
                     className="form-control" 
@@ -84,8 +76,6 @@ function RegisterUser() {
                 <label className="form-label">Senha</label>
                 <input 
                     id = "senha"
-                    value = {senha} 
-                    onChange={(e) => setSenha(e.target.value)}
 
                     type="password" 
                     className="form-control" 

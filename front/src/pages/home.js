@@ -97,28 +97,25 @@ function Home() {
 ];
 
     return (
-<<<<<<< HEAD
+
         <div className='body'>
-            <Header />
+          <Header />
 
-            <div className='container d-flex flex-column gap-3 mt-4'>
-                <div> 
-                  <h2 className='fs-4 mb-1'> Todas as perguntas </h2>
-                  <p> {questions.length} perguntas </p>
-                </div>
-                
-
-=======
-        <main>
-            <Header />
-
-            <section className='container d-flex flex-column gap-3 mt-4'>
->>>>>>> e8786e941f77927f285d1d1281b05ae478485f9b
-                {questions.map((q, index) => (
-                <QuestionCard key={q.id} {...q} index={index} />
-                ))}
-            </section>
-        </main>
+          <div className='container d-flex flex-column gap-3 mt-4'>
+              <div> 
+                <h2 className='fs-4 mb-1'> Todas as perguntas </h2>
+                <p> {questions.length} perguntas </p>
+              </div>
+          </div>
+              
+          <main>
+              <section className='container d-flex flex-column gap-3 mt-4'>
+                  {questions.map((q, index) => (
+                  <QuestionCard key={q.id} {...q} index={index} />
+                  ))}
+              </section>
+          </main>
+        </div>
     );
 }
 

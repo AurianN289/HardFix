@@ -22,5 +22,12 @@ public class UsuarioController {
         usuarioService.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
-    
+
+    @PostMapping(path="/login", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> login(@RequestBody Usuario usuario){
+        usuario = usuarioService.login(usuario);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    }
+
+
 }

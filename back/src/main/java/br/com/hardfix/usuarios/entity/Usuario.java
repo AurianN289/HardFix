@@ -7,7 +7,6 @@ import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.tags.entity.Tag;
 import br.com.hardfix.votos.entity.Voto;
-import br.com.hardfix.votos.service.VotoService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

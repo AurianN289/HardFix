@@ -10,6 +10,9 @@ import CardAuthor from './cardAuthor';
 
 
 function QuestionDetailCard(){
+
+    
+
     return(
         <article className='d-flex p-5 border rounded shadow-sm bg-white'>   
             <div className='col-1 d-flex flex-column align-items-center gap-2 me-3'>

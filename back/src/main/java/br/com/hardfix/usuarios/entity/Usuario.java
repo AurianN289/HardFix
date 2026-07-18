@@ -8,6 +8,7 @@ import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.tags.entity.Tag;
 import br.com.hardfix.votos.entity.Voto;
 import br.com.hardfix.votos.service.VotoService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,15 +32,19 @@ public class Usuario extends PersistenceEntity implements Serializable{
     @Column(name = "senha",  nullable = false)
     private String senha;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Pergunta> perguntas;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Resposta> respostas;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Notificacao> notificacoes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Voto> votos;
 }

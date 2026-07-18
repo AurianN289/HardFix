@@ -4,6 +4,7 @@ import br.com.hardfix.infraestructure.entity.PersistenceEntity;
 import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.tags.entity.Tag;
 import br.com.hardfix.usuarios.entity.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Pergunta extends PersistenceEntity implements Serializable {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pergunta")
     private List<Resposta> respostas;
 

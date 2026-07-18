@@ -5,6 +5,8 @@ import br.com.hardfix.perguntas.repository.PerguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PerguntaService implements PerguntaIService {
 
@@ -24,5 +26,9 @@ public class PerguntaService implements PerguntaIService {
         }else{
             perguntaRepository.save(pergunta);
         }
+    }
+
+    public List<Pergunta> findAll() throws RuntimeException{
+        return perguntaRepository.findAll();
     }
 }

@@ -4,6 +4,7 @@ import br.com.hardfix.infraestructure.entity.PersistenceEntity;
 import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.usuarios.entity.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Tag extends PersistenceEntity implements Serializable {
     @Column(name = "descricao")
     private String descricao;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private List<Pergunta> perguntas;
 }

@@ -2,11 +2,14 @@ package br.com.hardfix.perguntas.controller;
 
 import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.perguntas.service.PerguntaIService;
+import br.com.hardfix.tags.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -22,4 +25,8 @@ public class PerguntaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pergunta);
     }
 
+    @GetMapping("/findall")
+    public ResponseEntity<List<Pergunta>> findAll() {
+        return ResponseEntity.ok(perguntaService.findAll());
+    }
 }

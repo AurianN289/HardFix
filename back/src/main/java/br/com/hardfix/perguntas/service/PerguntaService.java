@@ -31,4 +31,11 @@ public class PerguntaService implements PerguntaIService {
     public List<Pergunta> findAll() throws RuntimeException{
         return perguntaRepository.findAll();
     }
+
+    public Pergunta findById(Long id) {
+        return perguntaRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Pergunta não encontrada")
+                );
+    }
 }

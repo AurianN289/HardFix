@@ -9,4 +9,6 @@ public interface PerguntaIService {
     void save(Pergunta pergunta) throws RuntimeException;
 
     List<Pergunta> findAll() throws RuntimeException;
+
+    Pergunta findById(Long id) throws RuntimeException;
 }

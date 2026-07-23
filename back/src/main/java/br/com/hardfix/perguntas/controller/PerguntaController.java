@@ -27,6 +27,16 @@ public class PerguntaController {
 
     @GetMapping("/findall")
     public ResponseEntity<List<Pergunta>> findAll() {
+
         return ResponseEntity.ok(perguntaService.findAll());
+
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Pergunta> findById(@PathVariable Long id) {
+
+        Pergunta pergunta = perguntaService.findById(id);
+
+        return ResponseEntity.ok(pergunta);
     }
 }

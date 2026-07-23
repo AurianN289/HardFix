@@ -26,7 +26,7 @@ public class Pergunta extends PersistenceEntity implements Serializable {
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
-    @Column(name = "descricao", nullable = false)
+    @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
     @Column(name = "data_criacao",  nullable = false)

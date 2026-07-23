@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function QuestionCard({
+    id,   
     titulo,
     descricao,
     tags = [],
@@ -19,9 +20,13 @@ function QuestionCard({
 
     const navigate = useNavigate();
 
+    function abrirPergunta() {
+        navigate(`/questionDetail/${id}`);
+    }
+
     return (
         <article className="d-flex p-3 border rounded shadow-sm question-card bg-white"
-        onClick={() => navigate(`/questionDetail`)} style={{ cursor: "pointer" }}>
+        onClick={abrirPergunta  } style={{ cursor: "pointer" }}>
 
             <div className="d-flex flex-column align-items-center justify-content-evenly col-1 text-center gap-2">
 

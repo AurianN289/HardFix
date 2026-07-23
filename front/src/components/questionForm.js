@@ -1,40 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
 import FormField from "./formField";
 import ImageUpload from "./imageUpload";
 import SuggestedTags from "./suggestedTags";
 import TagInput from "./tagInput";
 
+import useTags from "../hooks/useTags";
+import useCriarPergunta from "../hooks/useCriarPergunta";
+
 function QuestionForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
-  const [availableTags, setAvailableTags] = useState([]);
   const [image, setImage] = useState(null);
 
+  const {
+    availableTags,
+    loadingTags,
+    tagsError,
+  } = useTags();
 
-  useEffect(() => {
-    async function loadTags() {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/tags/findall"
-        );
+  const {
+    publicarPergunta,
+    publishing,
+    publishError,
+  } = useCriarPergunta();
 
-        if (!response.ok) {
-          throw new Error("Erro ao buscar tags");
-        }
+  function handleCancel() {
+    setTitle("");
+    setDescription("");
+    setTags([]);
+    setImage(null);
+  }
 
-        const data = await response.json();
-        setAvailableTags(data);
-      } catch (error) {
-        console.error("Erro ao carregar tags:", error);
-      }
-    }
-
-    loadTags();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
 
     if (tags.length === 0) {
       alert("Adicione pelo menos uma tag.");
@@ -61,42 +61,16 @@ function QuestionForm() {
       })),
     };
 
-  try {
-    const response = await fetch(
-      "http://localhost:8080/perguntas/save",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pergunta),
-      }
-    );
-
-    if (response.ok) {
-      const data = await response.json();
+    try {
+      const data = await publicarPergunta(pergunta);
 
       console.log("Pergunta cadastrada:", data);
       alert("Pergunta publicada com sucesso!");
 
       handleCancel();
-    } else {
-      const erro = await response.text();
-
-      console.error("Erro do servidor:", erro);
+    } catch (error) {
       alert("Erro ao publicar pergunta.");
     }
-  } catch (error) {
-    console.error("Erro de conexão:", error);
-    alert("Não foi possível conectar ao servidor.");
-  }
-};
-
-  function handleCancel() {
-    setTitle("");
-    setDescription("");
-    setTags([]);
-    setImage(null);
   }
 
   return (
@@ -126,23 +100,61 @@ function QuestionForm() {
         rows={8}
       />
 
-      <TagInput tags={tags} setTags={setTags} availableTags={availableTags} />
+      {loadingTags && (
+        <p className="text-muted">Carregando tags...</p>
+      )}
 
-      <SuggestedTags tags={tags} setTags={setTags} suggestedTags={availableTags}/>
+      {tagsError && (
+        <div className="alert alert-warning">
+          {tagsError}
+        </div>
+      )}
 
-      <ImageUpload image={image} setImage={setImage} />
+      {!loadingTags && !tagsError && (
+        <>
+          <TagInput
+            tags={tags}
+            setTags={setTags}
+            availableTags={availableTags}
+          />
+
+          <SuggestedTags
+            tags={tags}
+            setTags={setTags}
+            suggestedTags={availableTags}
+          />
+        </>
+      )}
+
+      <ImageUpload
+        image={image}
+        setImage={setImage}
+      />
+
+      {publishError && (
+        <div className="alert alert-danger mt-3">
+          {publishError}
+        </div>
+      )}
 
       <div className="form-actions d-flex justify-content-end align-items-center gap-3 pt-4 border-top">
         <button
           type="button"
           className="btn btn-link text-dark text-decoration-none"
           onClick={handleCancel}
+          disabled={publishing}
         >
           Cancelar
         </button>
 
-        <button type="submit" className="btn publish-button fw-semibold">
-          Publicar Pergunta
+        <button
+          type="submit"
+          className="btn publish-button fw-semibold"
+          disabled={publishing}
+        >
+          {publishing
+            ? "Publicando..."
+            : "Publicar Pergunta"}
         </button>
       </div>
     </form>

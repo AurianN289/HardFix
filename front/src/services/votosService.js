@@ -62,3 +62,51 @@ export async function votarEmPergunta(perguntaId, tipo) {
 
   return response.json();
 }
+
+
+export async function buscarVotoDaResposta(respostaId) {
+  const userId = sessionStorage.getItem("user_id");
+
+  const headers = {};
+
+  if (userId) {
+    headers["X-Usuario-Id"] = userId;
+  }
+
+  const response = await fetch(
+    `http://localhost:8080/votos/respostas/${respostaId}`,
+    { headers }
+  );
+
+  if (!response.ok) {
+    throw new Error("Não foi possível carregar os votos da resposta.");
+  }
+
+  return response.json();
+}
+
+export async function votarEmResposta(respostaId, tipo) {
+  const userId = sessionStorage.getItem("user_id");
+
+  if (!userId) {
+    throw new Error("Você precisa estar logado para votar.");
+  }
+
+  const response = await fetch(
+    `http://localhost:8080/votos/respostas/${respostaId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Usuario-Id": userId,
+      },
+      body: JSON.stringify({ tipo }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Não foi possível registrar o voto.");
+  }
+
+  return response.json();
+}

@@ -50,4 +50,35 @@ public class VotoController {
 
         return ResponseEntity.ok(resultado);
     }
+
+    @PutMapping("/respostas/{respostaId}")
+    public ResponseEntity<ResultadoVotoDTO> votarEmResposta(
+            @PathVariable Long respostaId,
+            @RequestHeader("X-Usuario-Id") Long usuarioId,
+            @RequestBody VotoDTO request
+    ) {
+        return ResponseEntity.ok(
+                votoService.votarEmResposta(
+                        respostaId,
+                        usuarioId,
+                        request.getTipo()
+                )
+        );
+    }
+
+    @GetMapping("/respostas/{respostaId}")
+    public ResponseEntity<ResultadoVotoDTO> buscarVotoDaResposta(
+            @PathVariable Long respostaId,
+            @RequestHeader(
+                    value = "X-Usuario-Id",
+                    required = false
+            ) Long usuarioId
+    ) {
+        return ResponseEntity.ok(
+                votoService.buscarVotoDaResposta(
+                        respostaId,
+                        usuarioId
+                )
+        );
+    }
 }

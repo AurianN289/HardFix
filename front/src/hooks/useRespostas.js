@@ -3,6 +3,31 @@ import {
   buscarRespostasPorPergunta,
 } from "../services/respostasService";
 
+function formatarResposta(answer) {
+  return {
+    id: answer.id,
+    votes: answer.votos ?? 0,
+    resolved: answer.resolvida ?? false,
+
+    author:
+      answer.nomeUsuario ??
+      answer.usuario?.nome ??
+      answer.autor?.nome ??
+      "Usuário",
+
+    createdAt:
+      answer.dataCriacao ??
+      answer.createdAt ??
+      "",
+
+    content: Array.isArray(answer.conteudo)
+      ? answer.conteudo
+      : answer.conteudo
+        ? [answer.conteudo]
+        : [],
+  };
+}
+
 function useRespostas(perguntaId) {
   const [answers, setAnswers] = useState([]);
   const [loadingAnswers, setLoadingAnswers] = useState(true);
@@ -10,6 +35,8 @@ function useRespostas(perguntaId) {
 
   const carregarRespostas = useCallback(async () => {
     if (!perguntaId) {
+      setAnswers([]);
+      setLoadingAnswers(false);
       return;
     }
 
@@ -20,32 +47,26 @@ function useRespostas(perguntaId) {
       const data =
         await buscarRespostasPorPergunta(perguntaId);
 
-      const formattedAnswers = data.map((answer) => ({
-        id: answer.id,
-        votes: answer.votos ?? 0,
-        resolved: answer.resolvida ?? false,
+      console.log("Respostas recebidas da API:", data);
 
-        author:
-          answer.usuario?.nome ??
-          answer.autor?.nome ??
-          "Usuário",
+      if (!Array.isArray(data)) {
+        throw new Error(
+          "O back-end não retornou uma lista de respostas"
+        );
+      }
 
-        createdAt:
-          answer.dataCriacao ??
-          answer.createdAt ??
-          "",
+      const formattedAnswers = data.map(formatarResposta);
 
-        content: Array.isArray(answer.conteudo)
-          ? answer.conteudo
-          : answer.conteudo
-            ? [answer.conteudo]
-            : [],
-      }));
+      console.log(
+        "Respostas formatadas:",
+        formattedAnswers
+      );
 
       setAnswers(formattedAnswers);
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao carregar respostas:", error);
 
+      setAnswers([]);
       setAnswersError(
         "Não foi possível carregar as respostas."
       );
@@ -59,28 +80,13 @@ function useRespostas(perguntaId) {
   }, [carregarRespostas]);
 
   function adicionarResposta(answer) {
-    const formattedAnswer = {
-      id: answer.id,
-      votes: answer.votos ?? 0,
-      resolved: answer.resolvida ?? false,
-
-      author:
-        answer.usuario?.nome ??
-        answer.autor?.nome ??
-        "Usuário",
-
-      createdAt: answer.dataCriacao ?? "Agora",
-
-      content: Array.isArray(answer.conteudo)
-        ? answer.conteudo
-        : answer.conteudo
-          ? [answer.conteudo]
-          : [],
-    };
+    if (!answer) {
+      return;
+    }
 
     setAnswers((currentAnswers) => [
       ...currentAnswers,
-      formattedAnswer,
+      formatarResposta(answer),
     ]);
   }
 

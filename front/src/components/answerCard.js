@@ -1,7 +1,17 @@
-import VoteColumn from "./voteColumn";
+import VoteButtons from "./voteButtons";
 import AuthorInfo from "./authorInfo";
+import useVotoResposta from "../hooks/useVotoResposta";
 
 function AnswerCard({ answer }) {
+  const {
+    placar,
+    meuVoto,
+    loading,
+    voting,
+    error,
+    votar,
+  } = useVotoResposta(answer.id);
+
   return (
     <article
       className={`answer-card bg-white border rounded-4 shadow-sm ${
@@ -15,7 +25,21 @@ function AnswerCard({ answer }) {
       )}
 
       <div className="d-flex align-items-start">
-        <VoteColumn initialVotes={answer.votes} />
+        <div className="vote-column flex-shrink-0">
+          <VoteButtons
+            placar={placar}
+            meuVoto={meuVoto}
+            loading={loading}
+            disabled={voting}
+            onVote={votar}
+          />
+
+          {error && (
+            <small className="text-danger d-block mt-2">
+              {error}
+            </small>
+          )}
+        </div>
 
         <div className="answer-content flex-grow-1">
           <div className="answer-text">

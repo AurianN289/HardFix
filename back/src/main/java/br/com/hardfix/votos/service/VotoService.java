@@ -2,6 +2,8 @@ package br.com.hardfix.votos.service;
 
 import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.perguntas.repository.PerguntaRepository;
+import br.com.hardfix.respostas.entity.Resposta;
+import br.com.hardfix.respostas.repository.RespostaRepository;
 import br.com.hardfix.usuarios.entity.Usuario;
 import br.com.hardfix.usuarios.repository.UsuarioRepository;
 import br.com.hardfix.votos.dto.ResultadoVotoDTO;
@@ -21,6 +23,7 @@ public class VotoService implements VotoIService {
     private final VotoRepository votoRepository;
     private final PerguntaRepository perguntaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final RespostaRepository respostaRepository;
 
     @Override
     @Transactional
@@ -79,6 +82,98 @@ public class VotoService implements VotoIService {
         long placar = calcularPlacar(perguntaId);
 
         return new ResultadoVotoDTO(placar, meuVoto);
+    }
+
+    @Transactional
+    public ResultadoVotoDTO votarEmResposta(
+            Long respostaId,
+            Long usuarioId,
+            TipoVoto tipo
+    ) {
+        if (tipo == null) {
+            throw new RuntimeException("O tipo do voto é obrigatório.");
+        }
+
+        Resposta resposta = respostaRepository
+                .findById(respostaId)
+                .orElseThrow(() ->
+                        new RuntimeException("Resposta não encontrada.")
+                );
+
+        Usuario usuario = usuarioRepository
+                .findById(usuarioId)
+                .orElseThrow(() ->
+                        new RuntimeException("Usuário não encontrado.")
+                );
+
+        Optional<Voto> votoExistente =
+                votoRepository.findByUsuarioIdAndRespostaId(
+                        usuarioId,
+                        respostaId
+                );
+
+        TipoVoto meuVoto;
+
+        if (votoExistente.isEmpty()) {
+            Voto voto = new Voto();
+
+            voto.setTipo(tipo);
+            voto.setUsuario(usuario);
+            voto.setResposta(resposta);
+            voto.setPergunta(null);
+
+            votoRepository.save(voto);
+            meuVoto = tipo;
+        } else {
+            Voto voto = votoExistente.get();
+
+            if (voto.getTipo() == tipo) {
+                votoRepository.delete(voto);
+                meuVoto = null;
+            } else {
+                voto.setTipo(tipo);
+                votoRepository.save(voto);
+                meuVoto = tipo;
+            }
+        }
+
+        return new ResultadoVotoDTO(
+                calcularPlacarResposta(respostaId),
+                meuVoto
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public ResultadoVotoDTO buscarVotoDaResposta(
+            Long respostaId,
+            Long usuarioId
+    ) {
+        if (!respostaRepository.existsById(respostaId)) {
+            throw new RuntimeException("Resposta não encontrada.");
+        }
+
+        TipoVoto meuVoto = null;
+
+        if (usuarioId != null) {
+            meuVoto = votoRepository
+                    .findByUsuarioIdAndRespostaId(usuarioId, respostaId)
+                    .map(Voto::getTipo)
+                    .orElse(null);
+        }
+
+        return new ResultadoVotoDTO(
+                calcularPlacarResposta(respostaId),
+                meuVoto
+        );
+    }
+
+    private long calcularPlacarResposta(Long respostaId) {
+        Long placar = votoRepository.calcularPlacarDaResposta(
+                respostaId,
+                TipoVoto.UPVOTE
+        );
+
+        return placar != null ? placar : 0L;
     }
 
     @Override

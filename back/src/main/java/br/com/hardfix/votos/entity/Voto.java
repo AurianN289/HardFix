@@ -35,11 +35,11 @@ public class Voto {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "pergunta_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pergunta_id", nullable = true)
     private Pergunta pergunta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resposta_id")
+    @JoinColumn(name = "resposta_id", nullable = true)
     private Resposta resposta;
 }

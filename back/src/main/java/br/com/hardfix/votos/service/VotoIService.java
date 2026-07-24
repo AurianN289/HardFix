@@ -9,4 +9,8 @@ public interface VotoIService {
     ResultadoVotoDTO votarEmPergunta(Long perguntaId, Long usuarioId, TipoVoto tipo);
 
     ResultadoVotoDTO buscarVotoDaPergunta(Long perguntaId, Long usuarioId);
+
+    ResultadoVotoDTO buscarVotoDaResposta(Long respostaId, Long usuarioId);
+
+    ResultadoVotoDTO votarEmResposta(Long respostaId, Long usuarioId, TipoVoto tipo);
 }

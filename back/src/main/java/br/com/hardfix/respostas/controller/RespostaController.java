@@ -1,9 +1,11 @@
 package br.com.hardfix.respostas.controller;
 
-import br.com.hardfix.perguntas.entity.Pergunta;
-import br.com.hardfix.respostas.entity.Resposta;
+import br.com.hardfix.respostas.dto.RespostaRequestDto;
+import br.com.hardfix.respostas.dto.RespostaResponseDto;
 import br.com.hardfix.respostas.service.RespostaIService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,29 +26,36 @@ public class RespostaController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Resposta> save(@RequestBody Resposta resposta) {
-
-        Resposta respostaSalva = respostaService.save(resposta);
+    public ResponseEntity<RespostaResponseDto> save(
+            @RequestBody RespostaRequestDto dto
+    ) {
+        RespostaResponseDto respostaSalva =
+                respostaService.save(dto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(respostaSalva);
     }
 
-    @GetMapping("/findall")
-    public ResponseEntity<List<Resposta>> findAll() {
-
-        return ResponseEntity.ok(respostaService.findAll());
-
+    @GetMapping(
+            path = "/findall",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<RespostaResponseDto>> findAll() {
+        return ResponseEntity.ok(
+                respostaService.findAll()
+        );
     }
 
-    @GetMapping("/pergunta/{perguntaId}")
-    public ResponseEntity<List<Resposta>> findByPerguntaId(
+    @GetMapping(
+            path = "/pergunta/{perguntaId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<List<RespostaResponseDto>> findByPerguntaId(
             @PathVariable Long perguntaId
     ) {
-        List<Resposta> respostas =
-                respostaService.findByPerguntaId(perguntaId);
-
-        return ResponseEntity.ok(respostas);
+        return ResponseEntity.ok(
+                respostaService.findByPerguntaId(perguntaId)
+        );
     }
 }

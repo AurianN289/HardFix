@@ -1,14 +1,15 @@
 package br.com.hardfix.respostas.service;
 
-import br.com.hardfix.respostas.entity.Resposta;
+import br.com.hardfix.respostas.dto.RespostaRequestDto;
+import br.com.hardfix.respostas.dto.RespostaResponseDto;
 
 import java.util.List;
 
 public interface RespostaIService {
 
-    Resposta save(Resposta resposta) throws RuntimeException;
+    RespostaResponseDto save(RespostaRequestDto dto);
 
-    List<Resposta> findAll() throws RuntimeException;
+    List<RespostaResponseDto> findAll();
 
-    List<Resposta> findByPerguntaId(Long perguntaId) throws RuntimeException;
+    List<RespostaResponseDto> findByPerguntaId(Long perguntaId);
 }

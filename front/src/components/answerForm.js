@@ -27,17 +27,9 @@ function AnswerForm({ questionId, onAddAnswer }) {
 
     const resposta = {
       conteudo: content.trim(),
-
-      usuario: {
-        id: Number(userId),
-      },
-
-      pergunta: {
-        id: Number(questionId),
-      },
+      usuarioId: Number(userId),
+      perguntaId: Number(questionId),
     };
-
-    console.log("Resposta a ser publicada:", resposta);
 
     try {
       const respostaCadastrada =

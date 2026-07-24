@@ -1,19 +1,46 @@
 import { useState } from "react";
-import VoteColumn from "./voteColumn";
+
+import VoteButtons from "./voteButtons";
 import TagBadge from "./tagBadge";
 import AuthorInfo from "./authorInfo";
+import useVotoPergunta from "../hooks/useVotoPergunta";
 
 function QuestionDetailCard({ question }) {
-  const [resolved, setResolved] = useState(question.resolved);
+  const [resolved, setResolved] = useState(
+    question.resolved ?? false
+  );
+
+  const {
+    placar,
+    meuVoto,
+    loadingVotes,
+    voting,
+    voteError,
+    votar,
+  } = useVotoPergunta(question.id);
 
   function handleResolved() {
-    setResolved(!resolved);
+    setResolved((currentResolved) => !currentResolved);
   }
 
   return (
     <article className="question-card bg-white border rounded-4 shadow-sm">
-      <div className="d-flex align-items-start">
-        <VoteColumn initialVotes={question.votes} />
+      <div className="d-flex align-items-start gap-3">
+        <div className="question-votes">
+          <VoteButtons
+            placar={placar}
+            meuVoto={meuVoto}
+            loading={loadingVotes}
+            disabled={voting}
+            onVote={votar}
+          />
+
+          {voteError && (
+            <small className="text-danger d-block mt-2">
+              {voteError}
+            </small>
+          )}
+        </div>
 
         <div className="question-content flex-grow-1">
           <h1 className="question-title fw-bold">
@@ -21,9 +48,13 @@ function QuestionDetailCard({ question }) {
           </h1>
 
           <div className="question-description">
-            {question.description.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+            {Array.isArray(question.description) ? (
+              question.description.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))
+            ) : (
+              <p>{question.description}</p>
+            )}
           </div>
 
           {question.image && (
@@ -35,9 +66,9 @@ function QuestionDetailCard({ question }) {
           )}
 
           <div className="d-flex flex-wrap gap-2 mt-4">
-            {question.tags.map((tag, index) => (
+            {(question.tags ?? []).map((tag) => (
               <TagBadge
-                key={tag.name}
+                key={tag.id ?? tag.name}
                 tag={tag.name}
                 variant={tag.variant}
               />
@@ -58,7 +89,10 @@ function QuestionDetailCard({ question }) {
               }`}
               onClick={handleResolved}
             >
-              ✓ {resolved ? "Pergunta resolvida" : "Marcar como resolvido"}
+              ✓{" "}
+              {resolved
+                ? "Pergunta resolvida"
+                : "Marcar como resolvido"}
             </button>
           </div>
         </div>

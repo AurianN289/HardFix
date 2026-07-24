@@ -2,7 +2,6 @@ package br.com.hardfix.respostas.entity;
 
 import br.com.hardfix.infraestructure.entity.PersistenceEntity;
 import br.com.hardfix.perguntas.entity.Pergunta;
-import br.com.hardfix.tags.entity.Tag;
 import br.com.hardfix.usuarios.entity.Usuario;
 import br.com.hardfix.votos.entity.Voto;
 import jakarta.persistence.*;

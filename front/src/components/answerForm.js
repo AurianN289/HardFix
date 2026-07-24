@@ -18,7 +18,7 @@ function AnswerForm({ questionId, onAddAnswer }) {
       return;
     }
 
-    const userId = localStorage.getItem("user_id");
+    const userId = sessionStorage.getItem("user_id");
 
     if (!userId) {
       alert("Você precisa estar logado para responder.");
@@ -36,6 +36,8 @@ function AnswerForm({ questionId, onAddAnswer }) {
         id: Number(questionId),
       },
     };
+
+    console.log("Resposta a ser publicada:", resposta);
 
     try {
       const respostaCadastrada =

@@ -41,7 +41,7 @@ function QuestionForm() {
       return;
     }
 
-    const userId = localStorage.getItem("user_id");
+    const userId = sessionStorage.getItem("user_id");
 
     if (!userId) {
       alert("Você precisa estar logado para publicar uma pergunta.");

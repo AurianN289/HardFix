@@ -30,7 +30,7 @@ function Login(){
             if (response.ok) {
                 const data = await response.json();
 
-                localStorage.setItem('user_id', data.id);
+                sessionStorage.setItem('user_id', data.id);
                 navigate("/home");
                 
             } else {

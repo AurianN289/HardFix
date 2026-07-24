@@ -1,32 +1,45 @@
 package br.com.hardfix.votos.entity;
 
-import br.com.hardfix.infraestructure.entity.PersistenceEntity;
+import br.com.hardfix.perguntas.entity.Pergunta;
 import br.com.hardfix.respostas.entity.Resposta;
 import br.com.hardfix.usuarios.entity.Usuario;
 import br.com.hardfix.votos.enums.TipoVoto;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "votos")
-@Data
-@AllArgsConstructor
+@Table(
+        name = "votos",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_voto_usuario_pergunta",
+                        columnNames = {"usuario_id", "pergunta_id"}
+                )
+        }
+)
+@Getter
+@Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class Voto extends PersistenceEntity implements Serializable {
+@AllArgsConstructor
+public class Voto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
+    @Column(nullable = false)
     private TipoVoto tipo;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pergunta_id", nullable = false)
+    private Pergunta pergunta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resposta_id")
     private Resposta resposta;
 }

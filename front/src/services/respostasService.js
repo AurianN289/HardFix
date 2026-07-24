@@ -1,6 +1,9 @@
 const API_URL = "http://localhost:8080/respostas";
 
 export async function cadastrarResposta(resposta) {
+
+  
+
   const response = await fetch(`${API_URL}/save`, {
     method: "POST",
     headers: {
